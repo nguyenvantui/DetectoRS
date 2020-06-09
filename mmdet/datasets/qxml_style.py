@@ -9,10 +9,10 @@ from .registry import DATASETS
 
 
 @DATASETS.register_module
-class XMLDataset(CustomDataset):
+class QXMLDataset(CustomDataset):
 
     def __init__(self, min_size=None, **kwargs):
-        super(XMLDataset, self).__init__(**kwargs)
+        super(QXMLDataset, self).__init__(**kwargs)
         self.cat2label = {cat: i + 1 for i, cat in enumerate(self.CLASSES)}
         self.min_size = min_size
 
@@ -45,18 +45,12 @@ class XMLDataset(CustomDataset):
         for obj in root.findall('object'):
             name = obj.find('name').text
             label = self.cat2label[name]
-            label = 2
-            try:
-                difficult = int(obj.find('difficult').text)
-            except:
-                difficult = 0
             bnd_box = obj.find('bndbox')
-            # Coordinates may be float type
             bbox = [
-                int(float(bnd_box.find('xmin').text)),
-                int(float(bnd_box.find('ymin').text)),
-                int(float(bnd_box.find('xmax').text)),
-                int(float(bnd_box.find('ymax').text))
+                int(bnd_box.find('xmin').text),
+                int(bnd_box.find('ymin').text),
+                int(bnd_box.find('xmax').text),
+                int(bnd_box.find('ymax').text)
             ]
             ignore = False
             if self.min_size:
@@ -65,12 +59,10 @@ class XMLDataset(CustomDataset):
                 h = bbox[3] - bbox[1]
                 if w < self.min_size or h < self.min_size:
                     ignore = True
-            if difficult or ignore:
-                bboxes_ignore.append(bbox)
-                labels_ignore.append(label)
-            else:
-                bboxes.append(bbox)
-                labels.append(label)
+
+            bboxes.append(bbox)
+            labels.append(label)
+
         if not bboxes:
             bboxes = np.zeros((0, 4))
             labels = np.zeros((0, ))
@@ -83,6 +75,7 @@ class XMLDataset(CustomDataset):
         else:
             bboxes_ignore = np.array(bboxes_ignore, ndmin=2) - 1
             labels_ignore = np.array(labels_ignore)
+
         ann = dict(
             bboxes=bboxes.astype(np.float32),
             labels=labels.astype(np.int64),

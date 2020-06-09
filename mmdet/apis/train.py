@@ -23,6 +23,7 @@ def set_random_seed(seed, deterministic=False):
             to True and `torch.backends.cudnn.benchmark` to False.
             Default: False.
     """
+    
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)

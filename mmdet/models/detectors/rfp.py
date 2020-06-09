@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from .. import builder
 from ..registry import DETECTORS
+# from .cascade_rcnn import CascadeRCNN
 from .htc import HybridTaskCascade
 
 

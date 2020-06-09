@@ -19,8 +19,9 @@ from mmdet.utils import collect_env, get_root_logger
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
-    parser.add_argument('--config', default="configs/DetectoRS/DetectoRS_mstrain_400_1200_x101_32x4d_40e_wheat_detection.py", help='train config file path')
-    # parser.add_argument('--config', default="configs/debug/layout_resnet.py", help='train config file path')
+    # parser.add_argument('--config', default="configs/DetectoRS/DetectoRS_mstrain_400_1200_x101_32x4d_40e_wheat_detection.py", help='train config file path')
+    # parser.add_argument('--config', default="configs/DetectoRS/testing_detector.py", help='train config file path')
+    parser.add_argument('--config', default="configs/debug/layout_resnet.py", help='train config file path')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
